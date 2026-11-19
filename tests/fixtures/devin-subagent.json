@@ -1,0 +1,1122 @@
+{
+  "initialize": {
+    "protocolVersion": 1,
+    "agentCapabilities": {
+      "loadSession": true,
+      "promptCapabilities": {
+        "image": true,
+        "audio": false,
+        "embeddedContext": true,
+        "_meta": {
+          "cognition.ai/untrustedPageContent": true
+        }
+      },
+      "mcpCapabilities": {
+        "http": true,
+        "sse": true
+      },
+      "sessionCapabilities": {
+        "list": {},
+        "delete": {},
+        "additionalDirectories": {},
+        "close": {
+          "_meta": {
+            "cognition.ai/force": true
+          }
+        }
+      },
+      "auth": {},
+      "_meta": {
+        "cognition.ai/sessionDefaultConfigOptions": true,
+        "cognition.ai/multiRootWorkspace": true,
+        "cognition.ai/sessionListContentSearch": true,
+        "cognition.ai/sessionListOrderBy": ["updated_at", "created_at"],
+        "cognition.ai/sessionListSortDirection": true,
+        "cognition.ai/sessionRename": true,
+        "cognition.ai/persistOnCreate": true,
+        "cognition.ai/sessionShare": true,
+        "cognition.ai/documentLifecycle": true,
+        "cognition.ai/userEdits": true,
+        "cognition.ai/pickup": true,
+        "cognition.ai/terminalLifecycle": true,
+        "cognition.ai/userConfig": true,
+        "cognition.ai/userShellCommand": true,
+        "cognition.ai/editableCommands": true,
+        "cognition.ai/commandRevision": true,
+        "cognition.ai/chains": true,
+        "cognition.ai/megaplan": true,
+        "cognition.ai/ruleMentions": true,
+        "cognition.ai/mentionTypes": [
+          {
+            "type": "file"
+          },
+          {
+            "type": "directory"
+          },
+          {
+            "type": "git"
+          },
+          {
+            "type": "rule",
+            "icon": "book",
+            "label": "Rules"
+          },
+          {
+            "type": "skill",
+            "icon": "zap",
+            "label": "Skills"
+          },
+          {
+            "type": "plan",
+            "icon": "file-text",
+            "label": "Plans"
+          },
+          {
+            "type": "conversation"
+          },
+          {
+            "type": "terminal"
+          },
+          {
+            "type": "codemap",
+            "icon": "map",
+            "label": "Codemaps"
+          }
+        ],
+        "cognition.ai/midTurnPrompts": true
+      }
+    },
+    "authMethods": [
+      {
+        "id": "devin-browser",
+        "name": "Log in with browser",
+        "description": "Sign in via your browser"
+      }
+    ],
+    "agentInfo": {
+      "name": "affogato",
+      "title": "Devin Agent",
+      "version": "3000.14.30825"
+    }
+  },
+  "sessionNew": {
+    "sessionId": "orderly-arithmetic",
+    "modes": {
+      "currentModeId": "accept-edits",
+      "availableModes": [
+        {
+          "id": "accept-edits",
+          "name": "Code"
+        },
+        {
+          "id": "smart",
+          "name": "Smart"
+        },
+        {
+          "id": "ask",
+          "name": "Ask"
+        },
+        {
+          "id": "plan",
+          "name": "Plan"
+        },
+        {
+          "id": "bypass",
+          "name": "Bypass Permissions"
+        }
+      ]
+    },
+    "configOptions": [
+      {
+        "id": "mode",
+        "name": "Session Mode",
+        "category": "mode",
+        "type": "select",
+        "currentValue": "accept-edits",
+        "options": [
+          {
+            "value": "accept-edits",
+            "name": "Code",
+            "description": "Write and edit code",
+            "_meta": {
+              "cognition.ai/icon": "code"
+            }
+          },
+          {
+            "value": "smart",
+            "name": "Smart",
+            "description": "Auto-approve actions the model judges safe",
+            "_meta": {
+              "cognition.ai/icon": "sparkles"
+            }
+          },
+          {
+            "value": "ask",
+            "name": "Ask",
+            "description": "Answer questions without code changes",
+            "_meta": {
+              "cognition.ai/icon": "message-circle"
+            }
+          },
+          {
+            "value": "plan",
+            "name": "Plan",
+            "description": "Plan changes before implementing",
+            "_meta": {
+              "cognition.ai/icon": "file-text"
+            }
+          },
+          {
+            "value": "bypass",
+            "name": "Bypass Permissions",
+            "description": "Auto-approve all tool calls unless your organization's policy requires approval",
+            "_meta": {
+              "cognition.ai/icon": "shield-off"
+            }
+          }
+        ]
+      },
+      {
+        "id": "model",
+        "name": "Model",
+        "description": "AI model to use",
+        "category": "model",
+        "type": "select",
+        "currentValue": "swe-2-high",
+        "options": [
+          {
+            "value": "swe-2-flash-medium",
+            "name": "SWE-2 Flash",
+            "_meta": {
+              "cognition.ai/supportsImages": false
+            }
+          }
+        ]
+      },
+      {
+        "id": "thought_level",
+        "name": "Thinking",
+        "category": "thought_level",
+        "type": "select",
+        "currentValue": "high",
+        "options": [
+          {
+            "value": "medium",
+            "name": "Medium"
+          },
+          {
+            "value": "high",
+            "name": "High"
+          },
+          {
+            "value": "max",
+            "name": "Max"
+          }
+        ]
+      },
+      {
+        "id": "speed",
+        "name": "Speed",
+        "category": "model_config",
+        "type": "select",
+        "currentValue": "standard",
+        "options": [
+          {
+            "value": "standard",
+            "name": "Standard"
+          },
+          {
+            "value": "fast",
+            "name": "Fast"
+          }
+        ]
+      }
+    ]
+  },
+  "prompts": [
+    {
+      "text": "Do these one tool per step: 1) run `printf 'x\\ny\\n' > c.txt && cat c.txt` in the shell, 2) run `ls missing-dir` in the shell, 3) find all files matching *.ts by file name, 4) if you have a subagent or task tool, use it to count the lines of a.txt, otherwise skip, 5) request write access to /tmp/devin-rec/other if you have a tool for that, otherwise skip. Then reply with one short sentence listing which tools you used.",
+      "updates": [
+        {
+          "sessionId": "orderly-arithmetic",
+          "update": {
+            "sessionUpdate": "config_option_update",
+            "configOptions": [
+              {
+                "id": "mode",
+                "name": "Session Mode",
+                "category": "mode",
+                "type": "select",
+                "currentValue": "accept-edits",
+                "options": [
+                  {
+                    "value": "accept-edits",
+                    "name": "Code",
+                    "description": "Write and edit code",
+                    "_meta": {
+                      "cognition.ai/icon": "code"
+                    }
+                  },
+                  {
+                    "value": "smart",
+                    "name": "Smart",
+                    "description": "Auto-approve actions the model judges safe",
+                    "_meta": {
+                      "cognition.ai/icon": "sparkles"
+                    }
+                  },
+                  {
+                    "value": "ask",
+                    "name": "Ask",
+                    "description": "Answer questions without code changes",
+                    "_meta": {
+                      "cognition.ai/icon": "message-circle"
+                    }
+                  },
+                  {
+                    "value": "plan",
+                    "name": "Plan",
+                    "description": "Plan changes before implementing",
+                    "_meta": {
+                      "cognition.ai/icon": "file-text"
+                    }
+                  },
+                  {
+                    "value": "bypass",
+                    "name": "Bypass Permissions",
+                    "description": "Auto-approve all tool calls unless your organization's policy requires approval",
+                    "_meta": {
+                      "cognition.ai/icon": "shield-off"
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "model",
+                "name": "Model",
+                "description": "AI model to use",
+                "category": "model",
+                "type": "select",
+                "currentValue": "swe-2-flash-medium",
+                "options": [
+                  {
+                    "value": "swe-2-flash-medium",
+                    "name": "SWE-2 Flash",
+                    "_meta": {
+                      "cognition.ai/supportsImages": false
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "thought_level",
+                "name": "Thinking",
+                "category": "thought_level",
+                "type": "select",
+                "currentValue": "medium",
+                "options": [
+                  {
+                    "value": "medium",
+                    "name": "Medium"
+                  },
+                  {
+                    "value": "high",
+                    "name": "High"
+                  },
+                  {
+                    "value": "max",
+                    "name": "Max"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "sessionId": "orderly-arithmetic",
+          "update": {
+            "sessionUpdate": "current_mode_update",
+            "currentModeId": "accept-edits"
+          }
+        },
+        {
+          "sessionId": "orderly-arithmetic",
+          "update": {
+            "sessionUpdate": "session_info_update",
+            "title": "Do these one tool per step: 1) run `printf 'x\\ny\\n' > c.txt && cat c.txt` in the..."
+          }
+        },
+        {
+          "sessionId": "orderly-arithmetic",
+          "update": {
+            "sessionUpdate": "agent_thought_chunk",
+            "content": {
+              "type": "text",
+              "text": "The user wants sequential tool calls, one per step. Do them."
+            },
+            "_meta": {
+              "cognition.ai/timestamp": "2026-11-19T18:36:33.061080+00:00"
+            }
+          }
+        },
+        {
+          "sessionId": "orderly-arithmetic",
+          "update": {
+            "sessionUpdate": "usage_update",
+            "used": 15971,
+            "size": 262144,
+            "_meta": {
+              "cognition.ai/inputTokens": 15925,
+              "cognition.ai/outputTokens": 46
+            }
+          }
+        },
+        {
+          "sessionId": "orderly-arithmetic",
+          "update": {
+            "sessionUpdate": "usage_update",
+            "used": 15971,
+            "size": 262144,
+            "_meta": {
+              "cognition.ai/inputTokens": 15925,
+              "cognition.ai/outputTokens": 46,
+              "cognition.ai/subagent_context": {
+                "parentAgentId": "root"
+              }
+            }
+          }
+        },
+        {
+          "sessionId": "orderly-arithmetic",
+          "update": {
+            "sessionUpdate": "tool_call",
+            "toolCallId": "call_a9ac447c5a1cdd04",
+            "title": "Ran printf",
+            "kind": "execute",
+            "content": [
+              {
+                "type": "content",
+                "content": {
+                  "type": "resource",
+                  "resource": {
+                    "mimeType": "text/x-shellscript",
+                    "text": "printf 'x\\ny\\n' > c.txt && cat c.txt",
+                    "uri": "tool://preview"
+                  },
+                  "_meta": {
+                    "cognition.ai/preview_is_shell_command": true
+                  }
+                }
+              }
+            ],
+            "rawInput": {
+              "command": "printf 'x\\ny\\n' > c.txt && cat c.txt"
+            },
+            "_meta": {
+              "cognition.ai/commandNames": ["printf"],
+              "cognition.ai/inferenceToolName": "exec",
+              "cognition.ai/timestamp": "2026-11-19T18:36:33.283789+00:00"
+            }
+          }
+        },
+        {
+          "sessionId": "orderly-arithmetic",
+          "update": {
+            "sessionUpdate": "tool_call_update",
+            "toolCallId": "call_a9ac447c5a1cdd04",
+            "status": "in_progress",
+            "_meta": {
+              "cognition.ai/inferenceToolName": "exec"
+            }
+          }
+        },
+        {
+          "sessionId": "orderly-arithmetic",
+          "update": {
+            "sessionUpdate": "tool_call_update",
+            "toolCallId": "call_a9ac447c5a1cdd04",
+            "status": "in_progress",
+            "_meta": {
+              "cognition.ai/inferenceToolName": "exec",
+              "cognition.ai/cwd": "/private/tmp/devin-rec/ws"
+            }
+          }
+        },
+        {
+          "sessionId": "orderly-arithmetic",
+          "update": {
+            "sessionUpdate": "tool_call_update",
+            "toolCallId": "call_a9ac447c5a1cdd04",
+            "status": "in_progress",
+            "content": [
+              {
+                "type": "content",
+                "content": {
+                  "type": "text",
+                  "text": "x\ny"
+                }
+              }
+            ],
+            "_meta": {
+              "cognition.ai/inferenceToolName": "exec",
+              "cognition.ai/terminalPreview": true
+            }
+          }
+        },
+        {
+          "sessionId": "orderly-arithmetic",
+          "update": {
+            "sessionUpdate": "tool_call_update",
+            "toolCallId": "call_a9ac447c5a1cdd04",
+            "status": "in_progress",
+            "content": [
+              {
+                "type": "content",
+                "content": {
+                  "type": "text",
+                  "text": "x\ny"
+                }
+              }
+            ],
+            "_meta": {
+              "cognition.ai/inferenceToolName": "exec",
+              "terminal_exit": {
+                "terminal_id": "659f0b",
+                "exit_code": 0,
+                "signal": null
+              }
+            }
+          }
+        },
+        {
+          "sessionId": "orderly-arithmetic",
+          "update": {
+            "sessionUpdate": "tool_call_update",
+            "toolCallId": "call_a9ac447c5a1cdd04",
+            "status": "completed",
+            "_meta": {
+              "cognition.ai/inferenceToolName": "exec"
+            }
+          }
+        },
+        {
+          "sessionId": "orderly-arithmetic",
+          "update": {
+            "sessionUpdate": "agent_thought_chunk",
+            "content": {
+              "type": "text",
+              "text": "Step 2: ls missing-dir"
+            },
+            "_meta": {
+              "cognition.ai/timestamp": "2026-11-19T18:36:34.875919+00:00"
+            }
+          }
+        },
+        {
+          "sessionId": "orderly-arithmetic",
+          "update": {
+            "sessionUpdate": "usage_update",
+            "used": 17743,
+            "size": 262144,
+            "_meta": {
+              "cognition.ai/inputTokens": 17716,
+              "cognition.ai/outputTokens": 27,
+              "cognition.ai/cachedReadTokens": 384
+            }
+          }
+        },
+        {
+          "sessionId": "orderly-arithmetic",
+          "update": {
+            "sessionUpdate": "usage_update",
+            "used": 17743,
+            "size": 262144,
+            "_meta": {
+              "cognition.ai/inputTokens": 17716,
+              "cognition.ai/outputTokens": 27,
+              "cognition.ai/cachedReadTokens": 384,
+              "cognition.ai/subagent_context": {
+                "parentAgentId": "root"
+              }
+            }
+          }
+        },
+        {
+          "sessionId": "orderly-arithmetic",
+          "update": {
+            "sessionUpdate": "tool_call",
+            "toolCallId": "call_9145b30ccf463d91",
+            "title": "Listed ./missing-dir",
+            "kind": "execute",
+            "content": [
+              {
+                "type": "content",
+                "content": {
+                  "type": "resource",
+                  "resource": {
+                    "mimeType": "text/x-shellscript",
+                    "text": "ls missing-dir",
+                    "uri": "tool://preview"
+                  },
+                  "_meta": {
+                    "cognition.ai/preview_is_shell_command": true
+                  }
+                }
+              }
+            ],
+            "rawInput": {
+              "command": "ls missing-dir"
+            },
+            "_meta": {
+              "cognition.ai/commandNames": ["ls"],
+              "cognition.ai/inferenceToolName": "exec",
+              "cognition.ai/timestamp": "2026-11-19T18:36:34.922577+00:00"
+            }
+          }
+        },
+        {
+          "sessionId": "orderly-arithmetic",
+          "update": {
+            "sessionUpdate": "tool_call_update",
+            "toolCallId": "call_9145b30ccf463d91",
+            "status": "in_progress",
+            "_meta": {
+              "cognition.ai/inferenceToolName": "exec"
+            }
+          }
+        },
+        {
+          "sessionId": "orderly-arithmetic",
+          "update": {
+            "sessionUpdate": "tool_call_update",
+            "toolCallId": "call_9145b30ccf463d91",
+            "status": "in_progress",
+            "_meta": {
+              "cognition.ai/inferenceToolName": "exec",
+              "cognition.ai/cwd": "/private/tmp/devin-rec/ws"
+            }
+          }
+        },
+        {
+          "sessionId": "orderly-arithmetic",
+          "update": {
+            "sessionUpdate": "tool_call_update",
+            "toolCallId": "call_9145b30ccf463d91",
+            "status": "in_progress",
+            "content": [
+              {
+                "type": "content",
+                "content": {
+                  "type": "text",
+                  "text": "ls: missing-dir: No such file or directory"
+                }
+              }
+            ],
+            "_meta": {
+              "cognition.ai/inferenceToolName": "exec",
+              "cognition.ai/terminalPreview": true
+            }
+          }
+        },
+        {
+          "sessionId": "orderly-arithmetic",
+          "update": {
+            "sessionUpdate": "tool_call_update",
+            "toolCallId": "call_9145b30ccf463d91",
+            "status": "in_progress",
+            "content": [
+              {
+                "type": "content",
+                "content": {
+                  "type": "text",
+                  "text": "ls: missing-dir: No such file or directory"
+                }
+              }
+            ],
+            "_meta": {
+              "cognition.ai/inferenceToolName": "exec",
+              "terminal_exit": {
+                "terminal_id": "35bccd",
+                "exit_code": 1,
+                "signal": null
+              }
+            }
+          }
+        },
+        {
+          "sessionId": "orderly-arithmetic",
+          "update": {
+            "sessionUpdate": "tool_call_update",
+            "toolCallId": "call_9145b30ccf463d91",
+            "status": "completed",
+            "_meta": {
+              "cognition.ai/inferenceToolName": "exec"
+            }
+          }
+        },
+        {
+          "sessionId": "orderly-arithmetic",
+          "update": {
+            "sessionUpdate": "agent_thought_chunk",
+            "content": {
+              "type": "text",
+              "text": "Step 3: find *.ts files."
+            },
+            "_meta": {
+              "cognition.ai/timestamp": "2026-11-19T18:36:35.410563+00:00"
+            }
+          }
+        },
+        {
+          "sessionId": "orderly-arithmetic",
+          "update": {
+            "sessionUpdate": "session_info_update",
+            "title": "Run shell commands, find TypeScript files, and report which tools were used"
+          }
+        },
+        {
+          "sessionId": "orderly-arithmetic",
+          "update": {
+            "sessionUpdate": "usage_update",
+            "used": 17808,
+            "size": 262144,
+            "_meta": {
+              "cognition.ai/inputTokens": 17774,
+              "cognition.ai/outputTokens": 34,
+              "cognition.ai/cachedReadTokens": 17664
+            }
+          }
+        },
+        {
+          "sessionId": "orderly-arithmetic",
+          "update": {
+            "sessionUpdate": "usage_update",
+            "used": 17808,
+            "size": 262144,
+            "_meta": {
+              "cognition.ai/inputTokens": 17774,
+              "cognition.ai/outputTokens": 34,
+              "cognition.ai/cachedReadTokens": 17664,
+              "cognition.ai/subagent_context": {
+                "parentAgentId": "root"
+              }
+            }
+          }
+        },
+        {
+          "sessionId": "orderly-arithmetic",
+          "update": {
+            "sessionUpdate": "tool_call",
+            "toolCallId": "call_8b318e26fa61b563",
+            "title": "Find files matching `*.ts`",
+            "kind": "search",
+            "rawInput": {
+              "query": "*.ts"
+            },
+            "_meta": {
+              "cognition.ai/inferenceToolName": "find_file_by_name",
+              "cognition.ai/timestamp": "2026-11-19T18:36:35.580736+00:00"
+            }
+          }
+        },
+        {
+          "sessionId": "orderly-arithmetic",
+          "update": {
+            "sessionUpdate": "tool_call_update",
+            "toolCallId": "call_8b318e26fa61b563",
+            "status": "in_progress",
+            "_meta": {
+              "cognition.ai/inferenceToolName": "find_file_by_name"
+            }
+          }
+        },
+        {
+          "sessionId": "orderly-arithmetic",
+          "update": {
+            "sessionUpdate": "tool_call_update",
+            "toolCallId": "call_8b318e26fa61b563",
+            "status": "in_progress",
+            "content": [
+              {
+                "type": "content",
+                "content": {
+                  "type": "resource_link",
+                  "name": "b.ts",
+                  "uri": "file:///private/tmp/devin-rec/ws/sub/b.ts"
+                }
+              }
+            ],
+            "_meta": {
+              "cognition.ai/inferenceToolName": "find_file_by_name"
+            }
+          }
+        },
+        {
+          "sessionId": "orderly-arithmetic",
+          "update": {
+            "sessionUpdate": "tool_call_update",
+            "toolCallId": "call_8b318e26fa61b563",
+            "status": "completed",
+            "_meta": {
+              "cognition.ai/inferenceToolName": "find_file_by_name"
+            }
+          }
+        },
+        {
+          "sessionId": "orderly-arithmetic",
+          "update": {
+            "sessionUpdate": "agent_thought_chunk",
+            "content": {
+              "type": "text",
+              "text": "Step 4: use run_subagent to count lines of a.txt. It's a trivial task but"
+            },
+            "_meta": {
+              "cognition.ai/timestamp": "2026-11-19T18:36:36.086333+00:00"
+            }
+          }
+        },
+        {
+          "sessionId": "orderly-arithmetic",
+          "update": {
+            "sessionUpdate": "agent_thought_chunk",
+            "content": {
+              "type": "text",
+              "text": " user asked. Use foreground subagent_explore? It has read-only access \u2014 counting lines of a.txt"
+            },
+            "_meta": {
+              "cognition.ai/timestamp": "2026-11-19T18:36:36.257462+00:00"
+            }
+          }
+        },
+        {
+          "sessionId": "orderly-arithmetic",
+          "update": {
+            "sessionUpdate": "agent_thought_chunk",
+            "content": {
+              "type": "text",
+              "text": " via read or grep. subagent_explore can read files; can it run wc? It says grep"
+            },
+            "_meta": {
+              "cognition.ai/timestamp": "2026-11-19T18:36:36.409992+00:00"
+            }
+          }
+        },
+        {
+          "sessionId": "orderly-arithmetic",
+          "update": {
+            "sessionUpdate": "agent_thought_chunk",
+            "content": {
+              "type": "text",
+              "text": ", glob, read, web_search \u2014 no exec. Counting lines via read is possible but a.txt"
+            },
+            "_meta": {
+              "cognition.ai/timestamp": "2026-11-19T18:36:36.553511+00:00"
+            }
+          }
+        },
+        {
+          "sessionId": "orderly-arithmetic",
+          "update": {
+            "sessionUpdate": "agent_thought_chunk",
+            "content": {
+              "type": "text",
+              "text": " may not exist. Check if a.txt exists first? Just launch subagent and ask it to count lines of"
+            },
+            "_meta": {
+              "cognition.ai/timestamp": "2026-11-19T18:36:36.710124+00:00"
+            }
+          }
+        },
+        {
+          "sessionId": "orderly-arithmetic",
+          "update": {
+            "sessionUpdate": "agent_thought_chunk",
+            "content": {
+              "type": "text",
+              "text": " /private/tmp/devin-rec/ws/a.txt and report count; if missing, say so."
+            },
+            "_meta": {
+              "cognition.ai/timestamp": "2026-11-19T18:36:36.829921+00:00"
+            }
+          }
+        },
+        {
+          "sessionId": "orderly-arithmetic",
+          "update": {
+            "sessionUpdate": "usage_update",
+            "used": 18020,
+            "size": 262144,
+            "_meta": {
+              "cognition.ai/inputTokens": 17825,
+              "cognition.ai/outputTokens": 195,
+              "cognition.ai/cachedReadTokens": 17664
+            }
+          }
+        },
+        {
+          "sessionId": "orderly-arithmetic",
+          "update": {
+            "sessionUpdate": "usage_update",
+            "used": 18020,
+            "size": 262144,
+            "_meta": {
+              "cognition.ai/inputTokens": 17825,
+              "cognition.ai/outputTokens": 195,
+              "cognition.ai/cachedReadTokens": 17664,
+              "cognition.ai/subagent_context": {
+                "parentAgentId": "root"
+              }
+            }
+          }
+        },
+        {
+          "sessionId": "orderly-arithmetic",
+          "update": {
+            "sessionUpdate": "tool_call",
+            "toolCallId": "call_a17851ef044a9809",
+            "title": "Ran explore subagent Count lines of a.txt",
+            "rawInput": {
+              "profile": "subagent_explore",
+              "task": "Count the number of lines in the file /private/tmp/devin-rec/ws/a.txt and report the count. If the file does not exist, say so. Do not modify anything.",
+              "title": "Count lines of a.txt"
+            },
+            "_meta": {
+              "cognition.ai/inferenceToolName": "run_subagent",
+              "cognition.ai/timestamp": "2026-11-19T18:36:39.506046+00:00"
+            }
+          }
+        },
+        {
+          "sessionId": "orderly-arithmetic",
+          "update": {
+            "sessionUpdate": "tool_call_update",
+            "toolCallId": "call_a17851ef044a9809",
+            "status": "in_progress",
+            "_meta": {
+              "cognition.ai/inferenceToolName": "run_subagent"
+            }
+          }
+        },
+        {
+          "sessionId": "orderly-arithmetic",
+          "update": {
+            "sessionUpdate": "tool_call_update",
+            "toolCallId": "1accb87f",
+            "status": "in_progress",
+            "_meta": {
+              "cognition.ai/subagent_started": {
+                "agentId": "1accb87f",
+                "title": "Count lines of a.txt",
+                "task": "Count the number of lines in the file /private/tmp/devin-rec/ws/a.txt and report the count. If the file does not exist, say so. Do not modify anything.",
+                "profile": "Explore",
+                "depth": 1,
+                "isBackground": false,
+                "model": "SWE-2 Flash Medium"
+              }
+            }
+          }
+        },
+        {
+          "sessionId": "orderly-arithmetic",
+          "update": {
+            "sessionUpdate": "tool_call",
+            "toolCallId": "call_aac6ee07082a7c92",
+            "title": "Read file",
+            "kind": "read",
+            "locations": [
+              {
+                "path": "/private/tmp/devin-rec/ws/a.txt"
+              }
+            ],
+            "rawInput": {
+              "file_path": "/private/tmp/devin-rec/ws/a.txt"
+            },
+            "_meta": {
+              "cognition.ai/inferenceToolName": "read",
+              "cognition.ai/subagent_context": {
+                "parentAgentId": "1accb87f"
+              },
+              "cognition.ai/timestamp": "2026-11-19T18:36:41.256903+00:00"
+            }
+          }
+        },
+        {
+          "sessionId": "orderly-arithmetic",
+          "update": {
+            "sessionUpdate": "tool_call_update",
+            "toolCallId": "1accb87f",
+            "status": "completed",
+            "_meta": {
+              "cognition.ai/subagent_completed": {
+                "agentId": "1accb87f",
+                "success": true,
+                "summary": "`/private/tmp/devin-rec/ws/a.txt` exists and contains **3 lines**.",
+                "depth": 1
+              }
+            }
+          }
+        },
+        {
+          "sessionId": "orderly-arithmetic",
+          "update": {
+            "sessionUpdate": "tool_call_update",
+            "toolCallId": "call_a17851ef044a9809",
+            "status": "completed",
+            "content": [
+              {
+                "type": "content",
+                "content": {
+                  "type": "text",
+                  "text": "`/private/tmp/devin-rec/ws/a.txt` exists and contains **3 lines**."
+                }
+              }
+            ],
+            "_meta": {
+              "cognition.ai/inferenceToolName": "run_subagent"
+            }
+          }
+        },
+        {
+          "sessionId": "orderly-arithmetic",
+          "update": {
+            "sessionUpdate": "agent_thought_chunk",
+            "content": {
+              "type": "text",
+              "text": "Step 5: request write access to /tmp/devin-rec/other via request_scope."
+            },
+            "_meta": {
+              "cognition.ai/timestamp": "2026-11-19T18:36:42.424989+00:00"
+            }
+          }
+        },
+        {
+          "sessionId": "orderly-arithmetic",
+          "update": {
+            "sessionUpdate": "usage_update",
+            "used": 18108,
+            "size": 262144,
+            "_meta": {
+              "cognition.ai/inputTokens": 18059,
+              "cognition.ai/outputTokens": 49,
+              "cognition.ai/cachedReadTokens": 17920
+            }
+          }
+        },
+        {
+          "sessionId": "orderly-arithmetic",
+          "update": {
+            "sessionUpdate": "usage_update",
+            "used": 18108,
+            "size": 262144,
+            "_meta": {
+              "cognition.ai/inputTokens": 18059,
+              "cognition.ai/outputTokens": 49,
+              "cognition.ai/cachedReadTokens": 17920,
+              "cognition.ai/subagent_context": {
+                "parentAgentId": "root"
+              }
+            }
+          }
+        },
+        {
+          "sessionId": "orderly-arithmetic",
+          "update": {
+            "sessionUpdate": "tool_call",
+            "toolCallId": "call_8d4e588cc6daee89",
+            "title": "Requested write access to /tmp/devin-rec/other",
+            "rawInput": {
+              "path": "/tmp/devin-rec/other",
+              "scope": "write"
+            },
+            "_meta": {
+              "cognition.ai/inferenceToolName": "request_scope",
+              "cognition.ai/timestamp": "2026-11-19T18:36:42.595563+00:00"
+            }
+          }
+        },
+        {
+          "sessionId": "orderly-arithmetic",
+          "update": {
+            "sessionUpdate": "tool_call_update",
+            "toolCallId": "call_8d4e588cc6daee89",
+            "status": "in_progress",
+            "_meta": {
+              "cognition.ai/inferenceToolName": "request_scope"
+            }
+          }
+        },
+        {
+          "sessionId": "orderly-arithmetic",
+          "update": {
+            "sessionUpdate": "tool_call_update",
+            "toolCallId": "call_8d4e588cc6daee89",
+            "status": "completed",
+            "content": [
+              {
+                "type": "content",
+                "content": {
+                  "type": "text",
+                  "text": "Scope granted: write access to /tmp/devin-rec/other"
+                }
+              }
+            ],
+            "_meta": {
+              "cognition.ai/inferenceToolName": "request_scope"
+            }
+          }
+        },
+        {
+          "sessionId": "orderly-arithmetic",
+          "update": {
+            "sessionUpdate": "agent_message_chunk",
+            "content": {
+              "type": "text",
+              "text": "Used exec (twice), find_file_by_name, run_subagent, and request_scope."
+            },
+            "_meta": {
+              "cognition.ai/timestamp": "2026-11-19T18:36:43.992050+00:00"
+            }
+          }
+        },
+        {
+          "sessionId": "orderly-arithmetic",
+          "update": {
+            "sessionUpdate": "usage_update",
+            "used": 18149,
+            "size": 262144,
+            "_meta": {
+              "cognition.ai/inputTokens": 18127,
+              "cognition.ai/outputTokens": 22
+            }
+          }
+        },
+        {
+          "sessionId": "orderly-arithmetic",
+          "update": {
+            "sessionUpdate": "usage_update",
+            "used": 18149,
+            "size": 262144,
+            "_meta": {
+              "cognition.ai/inputTokens": 18127,
+              "cognition.ai/outputTokens": 22,
+              "cognition.ai/subagent_context": {
+                "parentAgentId": "root"
+              }
+            }
+          }
+        }
+      ],
+      "result": {
+        "stopReason": "end_turn",
+        "usage": {
+          "totalTokens": 18149,
+          "inputTokens": 18127,
+          "outputTokens": 22
+        },
+        "_meta": {
+          "cognition.ai/userMessageId": "5010870a-ee49-4828-9b9c-2f906a3c00a3"
+        }
+      }
+    }
+  ]
+}

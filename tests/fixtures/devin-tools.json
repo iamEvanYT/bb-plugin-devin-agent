@@ -1,0 +1,1240 @@
+{
+  "initialize": {
+    "protocolVersion": 1,
+    "agentCapabilities": {
+      "loadSession": true,
+      "promptCapabilities": {
+        "image": true,
+        "audio": false,
+        "embeddedContext": true,
+        "_meta": {
+          "cognition.ai/untrustedPageContent": true
+        }
+      },
+      "mcpCapabilities": {
+        "http": true,
+        "sse": true
+      },
+      "sessionCapabilities": {
+        "list": {},
+        "delete": {},
+        "additionalDirectories": {},
+        "close": {
+          "_meta": {
+            "cognition.ai/force": true
+          }
+        }
+      },
+      "auth": {},
+      "_meta": {
+        "cognition.ai/sessionDefaultConfigOptions": true,
+        "cognition.ai/multiRootWorkspace": true,
+        "cognition.ai/sessionListContentSearch": true,
+        "cognition.ai/sessionListOrderBy": ["updated_at", "created_at"],
+        "cognition.ai/sessionListSortDirection": true,
+        "cognition.ai/sessionRename": true,
+        "cognition.ai/persistOnCreate": true,
+        "cognition.ai/sessionShare": true,
+        "cognition.ai/documentLifecycle": true,
+        "cognition.ai/userEdits": true,
+        "cognition.ai/pickup": true,
+        "cognition.ai/terminalLifecycle": true,
+        "cognition.ai/userConfig": true,
+        "cognition.ai/userShellCommand": true,
+        "cognition.ai/editableCommands": true,
+        "cognition.ai/commandRevision": true,
+        "cognition.ai/chains": true,
+        "cognition.ai/megaplan": true,
+        "cognition.ai/ruleMentions": true,
+        "cognition.ai/mentionTypes": [
+          {
+            "type": "file"
+          },
+          {
+            "type": "directory"
+          },
+          {
+            "type": "git"
+          },
+          {
+            "type": "rule",
+            "icon": "book",
+            "label": "Rules"
+          },
+          {
+            "type": "skill",
+            "icon": "zap",
+            "label": "Skills"
+          },
+          {
+            "type": "plan",
+            "icon": "file-text",
+            "label": "Plans"
+          },
+          {
+            "type": "conversation"
+          },
+          {
+            "type": "terminal"
+          },
+          {
+            "type": "codemap",
+            "icon": "map",
+            "label": "Codemaps"
+          }
+        ],
+        "cognition.ai/midTurnPrompts": true
+      }
+    },
+    "authMethods": [
+      {
+        "id": "devin-browser",
+        "name": "Log in with browser",
+        "description": "Sign in via your browser"
+      }
+    ],
+    "agentInfo": {
+      "name": "affogato",
+      "title": "Devin Agent",
+      "version": "3000.14.30825"
+    }
+  },
+  "sessionNew": {
+    "sessionId": "bead-research",
+    "modes": {
+      "currentModeId": "accept-edits",
+      "availableModes": [
+        {
+          "id": "accept-edits",
+          "name": "Code"
+        },
+        {
+          "id": "smart",
+          "name": "Smart"
+        },
+        {
+          "id": "ask",
+          "name": "Ask"
+        },
+        {
+          "id": "plan",
+          "name": "Plan"
+        },
+        {
+          "id": "bypass",
+          "name": "Bypass Permissions"
+        }
+      ]
+    },
+    "configOptions": [
+      {
+        "id": "mode",
+        "name": "Session Mode",
+        "category": "mode",
+        "type": "select",
+        "currentValue": "accept-edits",
+        "options": [
+          {
+            "value": "accept-edits",
+            "name": "Code",
+            "description": "Write and edit code",
+            "_meta": {
+              "cognition.ai/icon": "code"
+            }
+          },
+          {
+            "value": "smart",
+            "name": "Smart",
+            "description": "Auto-approve actions the model judges safe",
+            "_meta": {
+              "cognition.ai/icon": "sparkles"
+            }
+          },
+          {
+            "value": "ask",
+            "name": "Ask",
+            "description": "Answer questions without code changes",
+            "_meta": {
+              "cognition.ai/icon": "message-circle"
+            }
+          },
+          {
+            "value": "plan",
+            "name": "Plan",
+            "description": "Plan changes before implementing",
+            "_meta": {
+              "cognition.ai/icon": "file-text"
+            }
+          },
+          {
+            "value": "bypass",
+            "name": "Bypass Permissions",
+            "description": "Auto-approve all tool calls unless your organization's policy requires approval",
+            "_meta": {
+              "cognition.ai/icon": "shield-off"
+            }
+          }
+        ]
+      },
+      {
+        "id": "model",
+        "name": "Model",
+        "description": "AI model to use",
+        "category": "model",
+        "type": "select",
+        "currentValue": "swe-2-high",
+        "options": [
+          {
+            "value": "swe-2-flash-medium",
+            "name": "SWE-2 Flash",
+            "_meta": {
+              "cognition.ai/supportsImages": false
+            }
+          }
+        ]
+      },
+      {
+        "id": "thought_level",
+        "name": "Thinking",
+        "category": "thought_level",
+        "type": "select",
+        "currentValue": "high",
+        "options": [
+          {
+            "value": "medium",
+            "name": "Medium"
+          },
+          {
+            "value": "high",
+            "name": "High"
+          },
+          {
+            "value": "max",
+            "name": "Max"
+          }
+        ]
+      },
+      {
+        "id": "speed",
+        "name": "Speed",
+        "category": "model_config",
+        "type": "select",
+        "currentValue": "standard",
+        "options": [
+          {
+            "value": "standard",
+            "name": "Standard"
+          },
+          {
+            "value": "fast",
+            "name": "Fast"
+          }
+        ]
+      }
+    ]
+  },
+  "prompts": [
+    {
+      "text": "Do all of these, one tool per step: 1) list the files in this workspace, 2) search the workspace for the text 'beta', 3) read a.txt, 4) make a short todo list for the remaining steps, 5) edit a.txt to replace 'gamma' with 'delta', 6) run `wc -l a.txt` in the shell, 7) fetch https://example.com and tell me its title. Then reply with one short sentence.",
+      "updates": [
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "session_info_update",
+            "title": "Do all of these, one tool per step: 1) list the files in this workspace, 2) sear..."
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "agent_thought_chunk",
+            "content": {
+              "type": "text",
+              "text": "The user wants one tool per step, sequentially. Start with listing files."
+            },
+            "_meta": {
+              "cognition.ai/timestamp": "2026-11-19T18:34:42.046586+00:00"
+            }
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "usage_update",
+            "used": 15944,
+            "size": 262144,
+            "_meta": {
+              "cognition.ai/inputTokens": 15908,
+              "cognition.ai/outputTokens": 36,
+              "cognition.ai/cachedReadTokens": 8192
+            }
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "usage_update",
+            "used": 15944,
+            "size": 262144,
+            "_meta": {
+              "cognition.ai/inputTokens": 15908,
+              "cognition.ai/outputTokens": 36,
+              "cognition.ai/cachedReadTokens": 8192,
+              "cognition.ai/subagent_context": {
+                "parentAgentId": "root"
+              }
+            }
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "tool_call",
+            "toolCallId": "call_86c17fb821a1e4b1",
+            "title": "Listed ./",
+            "kind": "execute",
+            "content": [
+              {
+                "type": "content",
+                "content": {
+                  "type": "resource",
+                  "resource": {
+                    "mimeType": "text/x-shellscript",
+                    "text": "ls -la",
+                    "uri": "tool://preview"
+                  },
+                  "_meta": {
+                    "cognition.ai/preview_is_shell_command": true
+                  }
+                }
+              }
+            ],
+            "rawInput": {
+              "command": "ls -la"
+            },
+            "_meta": {
+              "cognition.ai/commandNames": ["ls"],
+              "cognition.ai/inferenceToolName": "exec",
+              "cognition.ai/timestamp": "2026-11-19T18:34:42.116355+00:00"
+            }
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "tool_call_update",
+            "toolCallId": "call_86c17fb821a1e4b1",
+            "status": "in_progress",
+            "_meta": {
+              "cognition.ai/inferenceToolName": "exec"
+            }
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "tool_call_update",
+            "toolCallId": "call_86c17fb821a1e4b1",
+            "status": "in_progress",
+            "_meta": {
+              "cognition.ai/inferenceToolName": "exec",
+              "cognition.ai/cwd": "/private/tmp/devin-rec/ws"
+            }
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "tool_call_update",
+            "toolCallId": "call_86c17fb821a1e4b1",
+            "status": "in_progress",
+            "content": [
+              {
+                "type": "content",
+                "content": {
+                  "type": "text",
+                  "text": "total 8\ndrwxr-xr-x@ 4 user  staff  128 Nov 19 18:34 ."
+                }
+              }
+            ],
+            "_meta": {
+              "cognition.ai/inferenceToolName": "exec",
+              "cognition.ai/terminalPreview": true
+            }
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "tool_call_update",
+            "toolCallId": "call_86c17fb821a1e4b1",
+            "status": "in_progress",
+            "content": [
+              {
+                "type": "content",
+                "content": {
+                  "type": "text",
+                  "text": "total 8\ndrwxr-xr-x@ 4 user  staff  128 Nov 19 18:34 .\ndrwxr-xr-x@ 5 user  staff  160 Nov 19 18:34 ..\n-rw-r--r--@ 1 user  staff   17 Nov 19 18:34 a.txt\ndrwxr-xr-x@ 3 user  staff   96 Nov 19 18:34 sub"
+                }
+              }
+            ],
+            "_meta": {
+              "cognition.ai/inferenceToolName": "exec",
+              "cognition.ai/terminalPreview": true
+            }
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "tool_call_update",
+            "toolCallId": "call_86c17fb821a1e4b1",
+            "status": "in_progress",
+            "content": [
+              {
+                "type": "content",
+                "content": {
+                  "type": "text",
+                  "text": "total 8\ndrwxr-xr-x@ 4 user  staff  128 Nov 19 18:34 .\ndrwxr-xr-x@ 5 user  staff  160 Nov 19 18:34 ..\n-rw-r--r--@ 1 user  staff   17 Nov 19 18:34 a.txt\ndrwxr-xr-x@ 3 user  staff   96 Nov 19 18:34 sub"
+                }
+              }
+            ],
+            "_meta": {
+              "cognition.ai/inferenceToolName": "exec",
+              "terminal_exit": {
+                "terminal_id": "95ec27",
+                "exit_code": 0,
+                "signal": null
+              }
+            }
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "tool_call_update",
+            "toolCallId": "call_86c17fb821a1e4b1",
+            "status": "completed",
+            "_meta": {
+              "cognition.ai/inferenceToolName": "exec"
+            }
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "agent_thought_chunk",
+            "content": {
+              "type": "text",
+              "text": "Step 2: search for 'beta'."
+            },
+            "_meta": {
+              "cognition.ai/timestamp": "2026-11-19T18:34:42.726718+00:00"
+            }
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "usage_update",
+            "used": 17814,
+            "size": 262144,
+            "_meta": {
+              "cognition.ai/inputTokens": 17787,
+              "cognition.ai/outputTokens": 27,
+              "cognition.ai/cachedReadTokens": 10496
+            }
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "usage_update",
+            "used": 17814,
+            "size": 262144,
+            "_meta": {
+              "cognition.ai/inputTokens": 17787,
+              "cognition.ai/outputTokens": 27,
+              "cognition.ai/cachedReadTokens": 10496,
+              "cognition.ai/subagent_context": {
+                "parentAgentId": "root"
+              }
+            }
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "tool_call",
+            "toolCallId": "call_8d88f656b9d118d8",
+            "title": "Search for 'beta'",
+            "kind": "search",
+            "locations": [
+              {
+                "path": "."
+              }
+            ],
+            "rawInput": {
+              "query": "beta",
+              "path": "."
+            },
+            "_meta": {
+              "cognition.ai/inferenceToolName": "grep",
+              "cognition.ai/timestamp": "2026-11-19T18:34:42.780098+00:00"
+            }
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "tool_call_update",
+            "toolCallId": "call_8d88f656b9d118d8",
+            "status": "in_progress",
+            "_meta": {
+              "cognition.ai/inferenceToolName": "grep"
+            }
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "tool_call_update",
+            "toolCallId": "call_8d88f656b9d118d8",
+            "status": "in_progress",
+            "content": [
+              {
+                "type": "content",
+                "content": {
+                  "type": "resource_link",
+                  "name": "a.txt",
+                  "uri": "file:///private/tmp/devin-rec/ws/a.txt"
+                }
+              }
+            ],
+            "_meta": {
+              "cognition.ai/inferenceToolName": "grep"
+            }
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "tool_call_update",
+            "toolCallId": "call_8d88f656b9d118d8",
+            "status": "completed",
+            "_meta": {
+              "cognition.ai/inferenceToolName": "grep"
+            }
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "agent_thought_chunk",
+            "content": {
+              "type": "text",
+              "text": "Step 3: read a.txt."
+            },
+            "_meta": {
+              "cognition.ai/timestamp": "2026-11-19T18:34:43.191025+00:00"
+            }
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "usage_update",
+            "used": 17892,
+            "size": 262144,
+            "_meta": {
+              "cognition.ai/inputTokens": 17857,
+              "cognition.ai/outputTokens": 35,
+              "cognition.ai/cachedReadTokens": 17664
+            }
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "usage_update",
+            "used": 17892,
+            "size": 262144,
+            "_meta": {
+              "cognition.ai/inputTokens": 17857,
+              "cognition.ai/outputTokens": 35,
+              "cognition.ai/cachedReadTokens": 17664,
+              "cognition.ai/subagent_context": {
+                "parentAgentId": "root"
+              }
+            }
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "tool_call",
+            "toolCallId": "call_b3f3dc702491d799",
+            "title": "Read file",
+            "kind": "read",
+            "locations": [
+              {
+                "path": "/private/tmp/devin-rec/ws/a.txt"
+              }
+            ],
+            "rawInput": {
+              "file_path": "/private/tmp/devin-rec/ws/a.txt"
+            },
+            "_meta": {
+              "cognition.ai/inferenceToolName": "read",
+              "cognition.ai/timestamp": "2026-11-19T18:34:44.159278+00:00"
+            }
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "tool_call_update",
+            "toolCallId": "call_b3f3dc702491d799",
+            "status": "in_progress",
+            "_meta": {
+              "cognition.ai/inferenceToolName": "read"
+            }
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "tool_call_update",
+            "toolCallId": "call_b3f3dc702491d799",
+            "status": "in_progress",
+            "_meta": {
+              "cognition.ai/inferenceToolName": "read"
+            }
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "tool_call_update",
+            "toolCallId": "call_b3f3dc702491d799",
+            "status": "completed",
+            "content": [
+              {
+                "type": "content",
+                "content": {
+                  "type": "text",
+                  "text": "3 lines"
+                }
+              }
+            ],
+            "_meta": {
+              "cognition.ai/inferenceToolName": "read"
+            }
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "session_info_update",
+            "title": "Inspect and edit a.txt, then fetch a webpage title in sequence"
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "agent_thought_chunk",
+            "content": {
+              "type": "text",
+              "text": "Step 4: make a short todo list for remaining steps (edit, wc -l, fetch"
+            },
+            "_meta": {
+              "cognition.ai/timestamp": "2026-11-19T18:34:44.772319+00:00"
+            }
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "agent_thought_chunk",
+            "content": {
+              "type": "text",
+              "text": ")."
+            },
+            "_meta": {
+              "cognition.ai/timestamp": "2026-11-19T18:34:44.847573+00:00"
+            }
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "usage_update",
+            "used": 18041,
+            "size": 262144,
+            "_meta": {
+              "cognition.ai/inputTokens": 17948,
+              "cognition.ai/outputTokens": 93,
+              "cognition.ai/cachedReadTokens": 17792
+            }
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "usage_update",
+            "used": 18041,
+            "size": 262144,
+            "_meta": {
+              "cognition.ai/inputTokens": 17948,
+              "cognition.ai/outputTokens": 93,
+              "cognition.ai/cachedReadTokens": 17792,
+              "cognition.ai/subagent_context": {
+                "parentAgentId": "root"
+              }
+            }
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "plan",
+            "entries": [
+              {
+                "content": "Edit a.txt: replace 'gamma' with 'delta'",
+                "priority": "medium",
+                "status": "in_progress"
+              },
+              {
+                "content": "Run `wc -l a.txt`",
+                "priority": "medium",
+                "status": "pending"
+              },
+              {
+                "content": "Fetch https://example.com and report its title",
+                "priority": "medium",
+                "status": "pending"
+              }
+            ]
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "usage_update",
+            "used": 18166,
+            "size": 262144,
+            "_meta": {
+              "cognition.ai/inputTokens": 18132,
+              "cognition.ai/outputTokens": 34,
+              "cognition.ai/cachedReadTokens": 17920
+            }
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "usage_update",
+            "used": 18166,
+            "size": 262144,
+            "_meta": {
+              "cognition.ai/inputTokens": 18132,
+              "cognition.ai/outputTokens": 34,
+              "cognition.ai/cachedReadTokens": 17920,
+              "cognition.ai/subagent_context": {
+                "parentAgentId": "root"
+              }
+            }
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "tool_call",
+            "toolCallId": "call_8df87b65303a0364",
+            "title": "Edit file",
+            "kind": "edit",
+            "content": [
+              {
+                "type": "diff",
+                "path": "/private/tmp/devin-rec/ws/a.txt",
+                "oldText": "alpha\nbeta\ngamma\n",
+                "newText": "alpha\nbeta\ndelta\n",
+                "_meta": {
+                  "cognition.ai/linesAdded": 1,
+                  "cognition.ai/linesRemoved": 1
+                }
+              }
+            ],
+            "locations": [
+              {
+                "path": "/private/tmp/devin-rec/ws/a.txt"
+              }
+            ],
+            "rawInput": {
+              "file_path": "/private/tmp/devin-rec/ws/a.txt",
+              "old_string": "gamma",
+              "new_string": "delta"
+            },
+            "_meta": {
+              "cognition.ai/inferenceToolName": "edit",
+              "cognition.ai/timestamp": "2026-11-19T18:34:45.747903+00:00"
+            }
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "tool_call_update",
+            "toolCallId": "call_8df87b65303a0364",
+            "status": "in_progress",
+            "_meta": {
+              "cognition.ai/inferenceToolName": "edit"
+            }
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "tool_call_update",
+            "toolCallId": "call_8df87b65303a0364",
+            "status": "in_progress",
+            "content": [
+              {
+                "type": "diff",
+                "path": "/private/tmp/devin-rec/ws/a.txt",
+                "oldText": "alpha\nbeta\ngamma\n",
+                "newText": "alpha\nbeta\ndelta\n",
+                "_meta": {
+                  "cognition.ai/linesAdded": 1,
+                  "cognition.ai/linesRemoved": 1
+                }
+              }
+            ],
+            "_meta": {
+              "cognition.ai/inferenceToolName": "edit"
+            }
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "tool_call_update",
+            "toolCallId": "call_8df87b65303a0364",
+            "status": "completed",
+            "_meta": {
+              "cognition.ai/inferenceToolName": "edit"
+            }
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "usage_update",
+            "used": 18240,
+            "size": 262144,
+            "_meta": {
+              "cognition.ai/inputTokens": 18221,
+              "cognition.ai/outputTokens": 19,
+              "cognition.ai/cachedReadTokens": 384
+            }
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "usage_update",
+            "used": 18240,
+            "size": 262144,
+            "_meta": {
+              "cognition.ai/inputTokens": 18221,
+              "cognition.ai/outputTokens": 19,
+              "cognition.ai/cachedReadTokens": 384,
+              "cognition.ai/subagent_context": {
+                "parentAgentId": "root"
+              }
+            }
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "tool_call",
+            "toolCallId": "call_814834064d025918",
+            "title": "Ran wc",
+            "kind": "execute",
+            "content": [
+              {
+                "type": "content",
+                "content": {
+                  "type": "resource",
+                  "resource": {
+                    "mimeType": "text/x-shellscript",
+                    "text": "wc -l a.txt",
+                    "uri": "tool://preview"
+                  },
+                  "_meta": {
+                    "cognition.ai/preview_is_shell_command": true
+                  }
+                }
+              }
+            ],
+            "rawInput": {
+              "command": "wc -l a.txt"
+            },
+            "_meta": {
+              "cognition.ai/commandNames": ["wc"],
+              "cognition.ai/inferenceToolName": "exec",
+              "cognition.ai/timestamp": "2026-11-19T18:34:46.491055+00:00"
+            }
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "tool_call_update",
+            "toolCallId": "call_814834064d025918",
+            "status": "in_progress",
+            "_meta": {
+              "cognition.ai/inferenceToolName": "exec"
+            }
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "tool_call_update",
+            "toolCallId": "call_814834064d025918",
+            "status": "in_progress",
+            "_meta": {
+              "cognition.ai/inferenceToolName": "exec",
+              "cognition.ai/cwd": "/private/tmp/devin-rec/ws"
+            }
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "tool_call_update",
+            "toolCallId": "call_814834064d025918",
+            "status": "in_progress",
+            "content": [
+              {
+                "type": "content",
+                "content": {
+                  "type": "text",
+                  "text": "       3 a.txt"
+                }
+              }
+            ],
+            "_meta": {
+              "cognition.ai/inferenceToolName": "exec",
+              "cognition.ai/terminalPreview": true
+            }
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "tool_call_update",
+            "toolCallId": "call_814834064d025918",
+            "status": "in_progress",
+            "content": [
+              {
+                "type": "content",
+                "content": {
+                  "type": "text",
+                  "text": "       3 a.txt"
+                }
+              }
+            ],
+            "_meta": {
+              "cognition.ai/inferenceToolName": "exec",
+              "terminal_exit": {
+                "terminal_id": "939422",
+                "exit_code": 0,
+                "signal": null
+              }
+            }
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "tool_call_update",
+            "toolCallId": "call_814834064d025918",
+            "status": "completed",
+            "_meta": {
+              "cognition.ai/inferenceToolName": "exec"
+            }
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "usage_update",
+            "used": 18285,
+            "size": 262144,
+            "_meta": {
+              "cognition.ai/inputTokens": 18265,
+              "cognition.ai/outputTokens": 20,
+              "cognition.ai/cachedReadTokens": 18176
+            }
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "usage_update",
+            "used": 18285,
+            "size": 262144,
+            "_meta": {
+              "cognition.ai/inputTokens": 18265,
+              "cognition.ai/outputTokens": 20,
+              "cognition.ai/cachedReadTokens": 18176,
+              "cognition.ai/subagent_context": {
+                "parentAgentId": "root"
+              }
+            }
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "tool_call",
+            "toolCallId": "call_bb915340af5b3afc",
+            "title": "Fetched https://example.com",
+            "kind": "fetch",
+            "rawInput": {
+              "url": "https://example.com"
+            },
+            "_meta": {
+              "cognition.ai/inferenceToolName": "webfetch",
+              "cognition.ai/timestamp": "2026-11-19T18:34:47.024984+00:00"
+            }
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "tool_call_update",
+            "toolCallId": "call_bb915340af5b3afc",
+            "status": "in_progress",
+            "_meta": {
+              "cognition.ai/inferenceToolName": "webfetch"
+            }
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "tool_call_update",
+            "toolCallId": "call_bb915340af5b3afc",
+            "status": "in_progress",
+            "_meta": {
+              "cognition.ai/inferenceToolName": "webfetch"
+            }
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "tool_call_update",
+            "toolCallId": "call_bb915340af5b3afc",
+            "status": "completed",
+            "content": [
+              {
+                "type": "content",
+                "content": {
+                  "type": "text",
+                  "text": "Fetched 157 characters from https://example.com"
+                }
+              }
+            ],
+            "_meta": {
+              "cognition.ai/inferenceToolName": "webfetch"
+            }
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "agent_thought_chunk",
+            "content": {
+              "type": "text",
+              "text": "The page title of example.com is \"Example Domain\" \u2014 well-known. The fetch returned content but not the title"
+            },
+            "_meta": {
+              "cognition.ai/timestamp": "2026-11-19T18:34:49.863484+00:00"
+            }
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "agent_thought_chunk",
+            "content": {
+              "type": "text",
+              "text": " tag explicitly. example.com's title is \"Example Domain\". I can state that confidently. Update todos and reply"
+            },
+            "_meta": {
+              "cognition.ai/timestamp": "2026-11-19T18:34:50.025601+00:00"
+            }
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "agent_thought_chunk",
+            "content": {
+              "type": "text",
+              "text": " with one short sentence."
+            },
+            "_meta": {
+              "cognition.ai/timestamp": "2026-11-19T18:34:50.107349+00:00"
+            }
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "usage_update",
+            "used": 18448,
+            "size": 262144,
+            "_meta": {
+              "cognition.ai/inputTokens": 18328,
+              "cognition.ai/outputTokens": 120
+            }
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "usage_update",
+            "used": 18448,
+            "size": 262144,
+            "_meta": {
+              "cognition.ai/inputTokens": 18328,
+              "cognition.ai/outputTokens": 120,
+              "cognition.ai/subagent_context": {
+                "parentAgentId": "root"
+              }
+            }
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "plan",
+            "entries": [
+              {
+                "content": "Edit a.txt: replace 'gamma' with 'delta'",
+                "priority": "medium",
+                "status": "completed"
+              },
+              {
+                "content": "Run `wc -l a.txt`",
+                "priority": "medium",
+                "status": "completed"
+              },
+              {
+                "content": "Fetch https://example.com and report its title",
+                "priority": "medium",
+                "status": "completed"
+              }
+            ]
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "agent_thought_chunk",
+            "content": {
+              "type": "text",
+              "text": "The title is \"Example Domain\". Reply with one short sentence as requested."
+            },
+            "_meta": {
+              "cognition.ai/timestamp": "2026-11-19T18:34:51.564777+00:00"
+            }
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "agent_message_chunk",
+            "content": {
+              "type": "text",
+              "text": "Done \u2014"
+            },
+            "_meta": {
+              "cognition.ai/timestamp": "2026-11-19T18:34:51.564825+00:00"
+            }
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "agent_message_chunk",
+            "content": {
+              "type": "text",
+              "text": " a.txt now has `delta` on line 3, `wc -l` reports 3 lines"
+            },
+            "_meta": {
+              "cognition.ai/timestamp": "2026-11-19T18:34:54.225736+00:00"
+            }
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "agent_message_chunk",
+            "content": {
+              "type": "text",
+              "text": ", and example.com's title is \"Example Domain\"."
+            },
+            "_meta": {
+              "cognition.ai/timestamp": "2026-11-19T18:34:54.285443+00:00"
+            }
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "usage_update",
+            "used": 18594,
+            "size": 262144,
+            "_meta": {
+              "cognition.ai/inputTokens": 18540,
+              "cognition.ai/outputTokens": 54
+            }
+          }
+        },
+        {
+          "sessionId": "bead-research",
+          "update": {
+            "sessionUpdate": "usage_update",
+            "used": 18594,
+            "size": 262144,
+            "_meta": {
+              "cognition.ai/inputTokens": 18540,
+              "cognition.ai/outputTokens": 54,
+              "cognition.ai/subagent_context": {
+                "parentAgentId": "root"
+              }
+            }
+          }
+        }
+      ],
+      "result": {
+        "stopReason": "end_turn",
+        "usage": {
+          "totalTokens": 18594,
+          "inputTokens": 18540,
+          "outputTokens": 54
+        },
+        "_meta": {
+          "cognition.ai/userMessageId": "2fcb46f8-7efb-4229-8f3b-d53ac557bffe"
+        }
+      }
+    }
+  ]
+}

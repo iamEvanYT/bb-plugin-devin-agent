@@ -32,7 +32,8 @@ export default async function plugin(bb: BbPluginApi) {
         args: ["acp"],
         env: {},
       },
-      acpDialect: "acp",
+      // Registered by the host entry (host/devin-dialect.ts).
+      acpDialect: "devin",
     },
     // Only list Devin on hosts where the CLI was found.
     experimental_visibility: "installed",

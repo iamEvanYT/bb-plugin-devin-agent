@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { createDevinBridge } from "../src/host/bridge.ts";
 import { loginCommand, parseAuthStatus } from "../src/host/account.ts";
-import { fakeAcp, fakeStdout, startContext, tick } from "./support.ts";
+import { fakeAcp, fakeStdout, startContext, tick } from "./support/bridge.ts";
 
 const SIGNED_IN = `Logged in (via Devin).
 

@@ -33,8 +33,10 @@ src/
   host/bridge.ts            The wrapped ACP bridge: inbound and outbound filters
   host/outbound.ts          Line filter over the bridge's stdout
   host/account.ts           `devin auth status` parsing for health
+  host/devin-dialect.ts     The `devin` ACP dialect and subagent nesting
   host/devin-executable.ts  CLI lookup and launch-spec rewrite
-tests/                      Node tests
+tests/                      Node tests; fixtures/ are recorded Devin sessions
+                            replayed through the built bridge
 skills/                     Agent skill shipped with the plugin
 docs/                       Developer documentation
 ```
@@ -47,9 +49,19 @@ docs/                       Developer documentation
   is declared, which forwards them to BB's approval prompt; `full` would
   approve every ask and silently override Devin's mode.
 - **No fork.** Devin advertises `loadSession` but not `session/fork`.
-- **Generic dialect.** Devin's vendor `_cognition.ai/*` notifications and
-  `_meta` fields are not read yet. A custom dialect registered with
-  `experimental_registerAcpDialect` in `host.ts` is where that would go.
+- **A `devin` dialect reads Devin's `_meta`.** `host/devin-dialect.ts` is
+  registered with `experimental_registerAcpDialect` at module load. It names
+  tools from `cognition.ai/inferenceToolName`, takes exit codes from
+  `terminal_exit`, marks `find_file_by_name` as a path search, and classifies
+  `run_subagent` as a delegation with the subagent's summary. The SDK merges a
+  call's updates without their `_meta`, so the dialect remembers exit codes,
+  output, and subagent links per call (bounded).
+- **Subagent rows are nested by the outbound filter.** The SDK's ACP
+  translator never sets `parentRef`. The dialect links each subagent id
+  (`cognition.ai/subagent_started`) to its `run_subagent` call, and tool calls
+  carrying `cognition.ai/subagent_context` to that call; the outbound filter
+  then adds `parentRef` (the delegation's `childRef`) to those rows' delta
+  keys, and drops the lifecycle updates Devin sends under the subagent id.
 
 ## Known gaps
 

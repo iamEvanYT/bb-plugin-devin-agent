@@ -2,9 +2,11 @@
 //
 // Inbound, each runtime request has its launch spec pointed at the Devin CLI
 // this host found. Outbound, the bridge's replies pass through a filter that
-// fills in what the generic bridge cannot know about Devin.
+// fills in what the generic bridge cannot know about Devin: account state in
+// health, and the nesting of subagent rows the `devin` dialect tracks.
 import {
   experimental_defineProviderBridge,
+  THREAD_DELTA_NOTIFICATION_METHOD,
   type ProviderBridgeDefinition,
   type ProviderBridgeEntry,
   type ProviderHealth,
@@ -20,6 +22,7 @@ import {
   resolveDevinExecutable,
   rewriteLaunchSpecs,
 } from "./devin-executable.ts";
+import type { SubagentNesting } from "./devin-dialect.ts";
 import { installOutboundFilter, type WritableLike } from "./outbound.ts";
 
 type JsonRpcId = string | number;
@@ -30,6 +33,7 @@ export interface DevinBridgeOptions {
   stdout?: WritableLike;
   resolveExecutable?: () => string | null;
   readAccount?: (executable: string) => Promise<DevinAccount | null>;
+  nesting?: SubagentNesting;
   log?: (message: string) => void;
 }
 
@@ -49,6 +53,7 @@ export function createDevinBridge(
     stdout = process.stdout,
     resolveExecutable = resolveDevinExecutable,
     readAccount = readDevinAccount,
+    nesting,
     log = (message) => process.stderr.write(`[devin] ${message}\n`),
   } = options;
 
@@ -71,10 +76,55 @@ export function createDevinBridge(
     };
   }
 
-  function outbound(message: unknown) {
-    if (!isRecord(message) || !isId(message.id) || "method" in message) {
+  /**
+   * Puts a subagent's rows under its delegation row (`parentRef` is the
+   * delegation's `childRef`) and drops Devin's subagent lifecycle updates,
+   * which the bridge would otherwise show as empty tool rows.
+   */
+  function nestDeltas(message: Message) {
+    const params = message.params;
+    if (
+      nesting === undefined ||
+      !isRecord(params) ||
+      !Array.isArray(params.deltas)
+    )
       return message;
+    let changed = false;
+    const deltas: unknown[] = [];
+    for (const delta of params.deltas) {
+      const key =
+        isRecord(delta) && isRecord(delta.key) ? delta.key : undefined;
+      const id =
+        typeof key?.providerItemId === "string"
+          ? key.providerItemId
+          : undefined;
+      if (id === undefined) {
+        deltas.push(delta);
+        continue;
+      }
+      if (nesting.isLifecycle(id)) {
+        changed = true;
+        continue;
+      }
+      const parentRef = nesting.parentOf(id);
+      if (parentRef !== undefined && key?.parentRef === undefined) {
+        changed = true;
+        deltas.push({ ...(delta as Message), key: { ...key, parentRef } });
+        continue;
+      }
+      deltas.push(delta);
     }
+    if (!changed) return message;
+    if (deltas.length === 0) return null;
+    return { ...message, params: { ...params, deltas } };
+  }
+
+  function outbound(message: unknown) {
+    if (!isRecord(message)) return message;
+    if (message.method === THREAD_DELTA_NOTIFICATION_METHOD) {
+      return nestDeltas(message);
+    }
+    if (!isId(message.id) || "method" in message) return message;
     const executable = pendingHealth.get(message.id);
     if (executable === undefined) return message;
     pendingHealth.delete(message.id);

@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { installOutboundFilter } from "../src/host/outbound.ts";
-import { fakeStdout, tick } from "./support.ts";
+import { fakeStdout, tick } from "./support/bridge.ts";
 
 test("passes unchanged lines through byte for byte", () => {
   const out = fakeStdout();

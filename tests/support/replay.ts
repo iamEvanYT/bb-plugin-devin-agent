@@ -4,6 +4,9 @@
 // The fake is found through BB_DEVIN_EXECUTABLE, so requests take the real
 // path: CLI lookup, then the proxy in front of Devin, then Devin.
 import { spawn } from "node:child_process";
+import { mkdtempSync, realpathSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { createInterface } from "node:readline";
 import { PROVIDER_BRIDGE_PROTOCOL_VERSION } from "@get-bb/plugin-sdk/provider-bridge";
@@ -17,6 +20,11 @@ export const FAKE_DEVIN = fileURLToPath(
   new URL("./fake-devin.mjs", import.meta.url),
 );
 const TIMEOUT_MS = 20_000;
+
+/** A fresh workspace for a replayed session (its real path, no symlinks). */
+export function replayWorkspace(): string {
+  return realpathSync(mkdtempSync(join(tmpdir(), "devin-replay-")));
+}
 
 export interface Replay {
   initialize: any;

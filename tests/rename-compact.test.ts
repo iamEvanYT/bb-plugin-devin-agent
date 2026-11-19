@@ -9,14 +9,19 @@ import {
   RENAME_METHOD,
   renameOffline,
 } from "../src/host/acp-proxy.ts";
-import { FAKE_DEVIN, executionOptions, replayTurn } from "./support/replay.ts";
+import {
+  FAKE_DEVIN,
+  executionOptions,
+  replayTurn,
+  replayWorkspace,
+} from "./support/replay.ts";
 
 const FIXTURE = fileURLToPath(
   new URL("./fixtures/devin-subagent.json", import.meta.url),
 );
 const SESSION_ID = JSON.parse(readFileSync(FIXTURE, "utf8")).sessionNew
   .sessionId as string;
-const CWD = "/private/tmp/devin-rec/ws";
+const CWD = replayWorkspace();
 
 function fakeLog() {
   const path = join(mkdtempSync(join(tmpdir(), "devin-fake-")), "log.ndjson");

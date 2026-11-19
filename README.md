@@ -2,10 +2,14 @@
 
 A [BB](https://getbb.app) plugin that runs BB threads through the Devin CLI's
 Agent Client Protocol server (`devin acp`). Devin owns the model connection,
-credentials, and its own tools; the plugin uses the Plugin SDK's generic ACP
-bridge and only adds Devin's launch details.
+credentials, and its own tools. The plugin builds on the Plugin SDK's generic
+ACP bridge and adds what is specific to Devin: finding the CLI, sign-in state,
+Devin's tool metadata and subagents, and session rename.
 
-Verified against Devin CLI 3000.14.30825 and Plugin SDK 0.6.157.
+Verified against Devin CLI 3000.14.30825, BB 0.50.1, and Plugin SDK 0.6.157.
+
+This is an independent community plugin. It is not affiliated with or endorsed
+by Cognition; Devin and its logo are Cognition's trademarks.
 
 ## Requirements
 

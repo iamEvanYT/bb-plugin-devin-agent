@@ -3,11 +3,11 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { fileURLToPath } from "node:url";
-import { replayTurn } from "./support/replay.ts";
+import { replayTurn, replayWorkspace } from "./support/replay.ts";
 
 const fixture = (name: string) =>
   fileURLToPath(new URL(`./fixtures/${name}.json`, import.meta.url));
-const CWD = "/private/tmp/devin-rec/ws";
+const CWD = replayWorkspace();
 
 async function rows(name: string) {
   const { replay } = await replayTurn(fixture(name), CWD);

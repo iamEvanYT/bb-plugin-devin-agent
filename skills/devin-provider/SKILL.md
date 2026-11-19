@@ -21,9 +21,9 @@ The provider is listed only on hosts where one of these exists.
 
 ## Signing in
 
-Run `devin auth login` on the host. Signed out, Devin offers no models, but
-health still reports ready because the generic ACP bridge does not check the
-account.
+Run `devin auth login` on the host. Health checks `devin auth status`: signed
+out it reports `unauthenticated` (or `expired`) with a login command that uses
+the CLI path the plugin found; signed in it shows the account email and plan.
 
 ## Behavior to expect
 

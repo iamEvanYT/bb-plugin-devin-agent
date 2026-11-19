@@ -14,13 +14,25 @@ bridge the wrapper replaces that command with the CLI it finds on this host:
 `BB_DEVIN_EXECUTABLE`, then `devin` on `PATH`, then the copy in Devin.app. When
 none exists the spec keeps `devin`, and health reports not installed.
 
+The wrapper also filters what the bridge writes back. The SDK's ACP bridge
+writes each message as one JSON line to `process.stdout` in its own process,
+so `host/outbound.ts` wraps that stream and `host/bridge.ts` amends the
+replies it tracked by request id. Health is the first: the generic bridge
+only checks that the CLI runs, so a `ready` result is checked against
+`devin auth status` and becomes `unauthenticated` (or `expired`) when Devin
+is signed out, with the account email, plan, and a login command that uses
+the resolved CLI path.
+
 ## Code layout
 
 ```text
 src/
   server.ts                 Provider declaration and ACP launch spec
-  host.ts                   Host entry: the wrapped ACP provider bridge
+  host.ts                   Host entry: exports the provider bridge
   constants.ts              Ids, command name, and paths shared by both
+  host/bridge.ts            The wrapped ACP bridge: inbound and outbound filters
+  host/outbound.ts          Line filter over the bridge's stdout
+  host/account.ts           `devin auth status` parsing for health
   host/devin-executable.ts  CLI lookup and launch-spec rewrite
 tests/                      Node tests
 skills/                     Agent skill shipped with the plugin
@@ -41,6 +53,4 @@ docs/                       Developer documentation
 
 ## Known gaps
 
-- Health reports `ready` whenever the CLI exists, even when signed out; the
-  generic dialect has no account check. Signed out, Devin lists no models.
 - No settings page, model allowlist, or install action yet.

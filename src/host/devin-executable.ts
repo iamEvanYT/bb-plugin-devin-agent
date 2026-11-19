@@ -86,6 +86,27 @@ function launchSpecs(params: unknown): Record<string, unknown>[] {
 }
 
 /**
+ * Points every `devin` ACP launch spec in a parsed runtime request at the
+ * resolved Devin CLI, in place. Returns the CLI the request will run (the
+ * resolved path, or `devin` when none was found), or null when the request
+ * carries no `devin` launch spec.
+ */
+export function rewriteLaunchSpecs(
+  message: unknown,
+  resolve: () => string | null = resolveDevinExecutable,
+): string | null {
+  if (!isRecord(message)) return null;
+  const specs = launchSpecs(message.params).filter(
+    (spec) => spec.command === DEVIN_COMMAND,
+  );
+  if (specs.length === 0) return null;
+  const executable = resolve();
+  if (executable === null) return DEVIN_COMMAND;
+  for (const spec of specs) spec.command = executable;
+  return executable;
+}
+
+/**
  * Rewrites a runtime JSON-RPC line so its ACP launch spec runs the resolved
  * Devin CLI. Lines without a `devin` launch spec, or that are not JSON, pass
  * through unchanged; when no CLI is found the spec keeps `devin`, so health
@@ -102,13 +123,7 @@ export function rewriteLaunchCommand(
   } catch {
     return line;
   }
-  if (!isRecord(message)) return line;
-  const specs = launchSpecs(message.params).filter(
-    (spec) => spec.command === DEVIN_COMMAND,
-  );
-  if (specs.length === 0) return line;
-  const executable = resolve();
+  const executable = rewriteLaunchSpecs(message, resolve);
   if (executable === null || executable === DEVIN_COMMAND) return line;
-  for (const spec of specs) spec.command = executable;
   return JSON.stringify(message);
 }

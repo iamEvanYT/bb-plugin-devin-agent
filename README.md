@@ -26,14 +26,14 @@ BB lists Devin in the provider picker on hosts where the CLI is found.
 
 ## Supported BB features
 
-| BB feature      | Details                                                                                                                        |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| Provider picker | Visible on hosts where the Devin CLI is found.                                                                                 |
-| Health          | Reports not installed, or ready with the installed CLI version.                                                                |
-| Models          | Discovered from Devin's ACP `model` config option for the workspace.                                                           |
-| Permissions     | Devin's Session Mode (Code, Smart, Ask, Plan, Bypass) is the only control; what Devin asks about becomes a BB approval prompt. |
-| Skills          | BB lists Devin's skill directories (`~/.config/devin/skills`, `.devin/skills`, and the `cognition` equivalents).               |
-| Timeline rows   | Whatever the generic ACP bridge maps from Devin's tool calls.                                                                  |
+| BB feature      | Details                                                                                                                           |
+| --------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| Provider picker | Visible on hosts where the Devin CLI is found.                                                                                    |
+| Health          | Reports not installed, signed out, or expired (from `devin auth status`), or ready with the CLI version, account email, and plan. |
+| Models          | Discovered from Devin's ACP `model` config option for the workspace.                                                              |
+| Permissions     | Devin's Session Mode (Code, Smart, Ask, Plan, Bypass) is the only control; what Devin asks about becomes a BB approval prompt.    |
+| Skills          | BB lists Devin's skill directories (`~/.config/devin/skills`, `.devin/skills`, and the `cognition` equivalents).                  |
+| Timeline rows   | Whatever the generic ACP bridge maps from Devin's tool calls.                                                                     |
 
 Not supported yet: fork (Devin has no `session/fork`), rename, archive,
 manual compaction, native questions, BB's `auto` and `full` permission modes, plan mode,

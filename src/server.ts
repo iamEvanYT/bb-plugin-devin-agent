@@ -31,12 +31,6 @@ export default async function plugin(bb: BbPluginApi) {
         command: DEVIN_COMMAND,
         args: ["acp"],
         env: {},
-        // `--permission-mode` is a global flag, so it goes before `acp`.
-        permissionCli: {
-          workspaceWrite: ["--permission-mode", "accept-edits"],
-          full: ["--permission-mode", "dangerous"],
-          insertAfterArgs: 0,
-        },
       },
       acpDialect: "acp",
     },
@@ -59,8 +53,11 @@ export default async function plugin(bb: BbPluginApi) {
       supportsThreadRename: false,
       // Devin advertises session/load but not session/fork.
       fork: "none",
-      // The ACP bridge supports these two; `auto` is refused.
-      permissionModes: ["accept-edits", "full"],
+      // Devin's Session Mode (Code, Smart, Ask, Plan, Bypass) decides what it
+      // asks before doing. In accept-edits the bridge sends those asks to
+      // BB's approval prompt; `full` would approve them all and override the
+      // mode, so it is not offered.
+      permissionModes: ["accept-edits"],
       reasoningLevels: ["medium"],
     },
     composerActions: [],

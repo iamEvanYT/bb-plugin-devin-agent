@@ -27,8 +27,11 @@ account.
 
 ## Behavior to expect
 
-- Permission modes: `accept-edits` runs `devin --permission-mode accept-edits`,
-  `full` runs `--permission-mode dangerous`. `auto` is not offered.
+- Permissions follow Devin's Session Mode (`mode` option: `accept-edits`
+  "Code", `smart`, `ask`, `plan`, `bypass`), chosen in BB's model switcher or
+  with `bb thread spawn --option mode=<value>`. Whatever Devin asks about
+  appears as a BB approval prompt. BB's only permission mode is
+  `accept-edits`; `full` and `auto` are not offered.
 - Skills from `~/.config/devin/skills`, `~/.config/cognition/skills`,
   `.devin/skills`, and `.cognition/skills` appear in BB's `/` menu.
 - Not supported: fork, rename, archive, manual compaction, native questions,

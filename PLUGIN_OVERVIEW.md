@@ -6,8 +6,9 @@ thread and BB drives the Devin CLI through its Agent Client Protocol server
 
 - **Works with Devin.app.** The plugin finds `devin` on `PATH`, or the CLI
   bundled inside Devin.app when it is not linked.
-- **Permission modes carry over.** Accept edits and full map to Devin's
-  `accept-edits` and `dangerous` permission modes.
+- **Devin's Session Mode controls permissions.** Pick Code, Smart, Ask, Plan,
+  or Bypass in the model switcher; anything Devin asks about shows up as a BB
+  approval prompt.
 - **Devin's skills show up** in BB's `/` menu.
 
 ## Requirements

@@ -29,10 +29,11 @@ docs/                       Developer documentation
 
 ## Design decisions
 
-- **Permission modes are CLI flags.** The ACP bridge supports `accept-edits`
-  and `full`. They map to `devin --permission-mode accept-edits` and
-  `--permission-mode dangerous`, inserted before `acp` because the flag is
-  global.
+- **Devin's Session Mode is the permission control.** Devin decides what to
+  ask about from its mode (Code, Smart, Ask, Plan, Bypass), and the ACP bridge
+  answers those asks according to BB's permission mode. Only `accept-edits`
+  is declared, which forwards them to BB's approval prompt; `full` would
+  approve every ask and silently override Devin's mode.
 - **No fork.** Devin advertises `loadSession` but not `session/fork`.
 - **Generic dialect.** Devin's vendor `_cognition.ai/*` notifications and
   `_meta` fields are not read yet. A custom dialect registered with

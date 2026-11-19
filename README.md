@@ -35,12 +35,13 @@ BB lists Devin in the provider picker on hosts where the CLI is found.
 | Skills          | BB lists Devin's skill directories (`~/.config/devin/skills`, `.devin/skills`, and the `cognition` equivalents).                             |
 | Timeline rows   | Reads, searches (content and file name), commands with output and exit codes, edits, web fetches, and plans. Devin's own tools show by name. |
 | Rename          | Renaming a thread renames its Devin session (through the proxy described in [docs/architecture.md](docs/architecture.md)).                   |
+| Reasoning       | Each model offers the levels Devin reports for it (Low to Max); the level is set as Devin's `thought_level` option.                          |
 | `/compact`      | Runs Devin's own `/compact` and shows a compaction row.                                                                                      |
 | Subagents       | Devin's `run_subagent` is a delegation row with the subagent's summary, and the subagent's work is nested inside it.                         |
 
 Not supported yet: fork (Devin has no `session/fork`), archive, native
-questions, BB's `auto` and `full` permission modes, plan mode,
-reasoning levels, and the usage dashboard.
+questions, BB's `auto` and `full` permission modes, plan mode, and the usage
+dashboard.
 
 ## Development
 

@@ -41,8 +41,11 @@ the CLI path the plugin found; signed in it shows the account email and plan.
   thread's rename stays in bb.
 - `/compact` (or `bb thread compact`) runs Devin's own `/compact`. Devin sends
   no usage update afterwards, so the context meter refreshes on the next turn.
-- Not supported: fork, archive, native questions, plan mode, reasoning levels,
-  and the usage dashboard.
+- Reasoning levels are the ones each model reports (Low, Medium, High, XHigh,
+  Max, or a subset); BB sets Devin's `thought_level` option to match. Models
+  that report none run at Devin's default.
+- Not supported: fork, archive, native questions, plan mode, and the usage
+  dashboard.
 
 ## Troubleshooting
 

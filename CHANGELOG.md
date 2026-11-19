@@ -5,6 +5,11 @@ All notable changes to this plugin are documented here. The format follows
 
 ## [0.1.0] - 2026-11-19
 
+### Fixed
+
+- Picking a reasoning level other than Medium no longer fails thread
+  creation: the provider declares every level Devin models report.
+
 ### Added
 
 - Devin provider backed by `devin acp` through the Plugin SDK's ACP bridge.

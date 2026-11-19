@@ -11,6 +11,15 @@ import {
   PROVIDER_ID,
 } from "./constants.ts";
 
+/** Devin's reasoning levels, with Devin's own labels. */
+const REASONING_LEVELS = [
+  { id: "low", label: "Low" },
+  { id: "medium", label: "Medium" },
+  { id: "high", label: "High" },
+  { id: "xhigh", label: "XHigh" },
+  { id: "max", label: "Max" },
+] as const;
+
 export default async function plugin(bb: BbPluginApi) {
   bb.providers.register({
     id: PROVIDER_ID,
@@ -61,8 +70,12 @@ export default async function plugin(bb: BbPluginApi) {
       // BB's approval prompt; `full` would approve them all and override the
       // mode, so it is not offered.
       permissionModes: ["accept-edits"],
-      reasoningLevels: ["medium"],
+      // Every level a Devin model reports (each model lists its own subset in
+      // model/list). A level missing here is rejected when the thread starts,
+      // even though the picker offered it.
+      reasoningLevels: REASONING_LEVELS.map((level) => level.id),
     },
+    reasoningLevels: REASONING_LEVELS,
     composerActions: [],
   });
 

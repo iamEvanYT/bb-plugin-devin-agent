@@ -18,5 +18,6 @@ thread and BB drives the Devin CLI through its Agent Client Protocol server
 
 ## Good to know
 
-- Not supported yet: fork, rename, archive, manual compaction, and the usage
-  dashboard.
+- Renaming a thread renames its Devin session, and `/compact` runs Devin's
+  own compaction.
+- Not supported yet: fork, archive, and the usage dashboard.

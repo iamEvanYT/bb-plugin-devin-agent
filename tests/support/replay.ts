@@ -1,5 +1,8 @@
-// Runs the built bridge (dist/host.js) as the runtime does, against the fake
-// Devin replaying a fixture, and returns the assembled bb thread events.
+// Runs the built bridge (dist/host.js) as the runtime does, with the fake
+// Devin replaying a fixture as its CLI, and returns the assembled bb events.
+//
+// The fake is found through BB_DEVIN_EXECUTABLE, so requests take the real
+// path: CLI lookup, then the proxy in front of Devin, then Devin.
 import { spawn } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { createInterface } from "node:readline";
@@ -10,16 +13,25 @@ import {
 } from "@get-bb/plugin-sdk/provider-bridge/testing";
 
 const root = fileURLToPath(new URL("../..", import.meta.url));
-const FAKE_DEVIN = fileURLToPath(new URL("./fake-devin.mjs", import.meta.url));
+export const FAKE_DEVIN = fileURLToPath(
+  new URL("./fake-devin.mjs", import.meta.url),
+);
+const TIMEOUT_MS = 20_000;
 
 export interface Replay {
-  events: any[];
+  initialize: any;
   messages: any[];
+  readonly events: any[];
   request(method: string, params: Record<string, unknown>): Promise<any>;
+  waitFor(predicate: (events: any[]) => boolean, what: string): Promise<void>;
   close(): void;
 }
 
-export async function startReplay(cwd: string): Promise<Replay> {
+export async function startReplay(
+  fixture: string,
+  cwd: string,
+  env: Record<string, string> = {},
+): Promise<Replay> {
   const launch = experimental_resolveProviderBridgeLaunch({
     modulePath: `${root}dist/host.js`,
     pluginId: "devin-agent",
@@ -27,7 +39,12 @@ export async function startReplay(cwd: string): Promise<Replay> {
   });
   const child = spawn(launch.command, launch.args, {
     cwd: launch.cwd,
-    env: launch.env,
+    env: {
+      ...launch.env,
+      BB_DEVIN_EXECUTABLE: FAKE_DEVIN,
+      FAKE_DEVIN_FIXTURE: fixture,
+      ...env,
+    },
     stdio: ["pipe", "pipe", "inherit"],
   });
   const messages: any[] = [];
@@ -46,7 +63,7 @@ export async function startReplay(cwd: string): Promise<Replay> {
       const n = ++id;
       const timer = setTimeout(
         () => reject(new Error(`${method} timed out`)),
-        20_000,
+        TIMEOUT_MS,
       );
       waiting.set(n, (message) => {
         clearTimeout(timer);
@@ -56,27 +73,39 @@ export async function startReplay(cwd: string): Promise<Replay> {
         `${JSON.stringify({ jsonrpc: "2.0", id: n, method, params })}\n`,
       );
     });
+  const events = () =>
+    experimental_assembleCapturedThreadEvents(messages, "devin");
 
-  await request("initialize", {
-    protocolVersion: PROVIDER_BRIDGE_PROTOCOL_VERSION,
-    client: { name: "replay-test", version: "0" },
-  });
-
-  return {
-    messages,
-    get events() {
-      return experimental_assembleCapturedThreadEvents(messages, "devin");
-    },
-    request,
-    close: () => child.kill(),
-  };
+  try {
+    const initialize = await request("initialize", {
+      protocolVersion: PROVIDER_BRIDGE_PROTOCOL_VERSION,
+      client: { name: "replay-test", version: "0" },
+    });
+    return {
+      initialize,
+      messages,
+      get events() {
+        return events();
+      },
+      request,
+      async waitFor(predicate, what) {
+        const deadline = Date.now() + TIMEOUT_MS;
+        while (!predicate(events())) {
+          if (Date.now() > deadline)
+            throw new Error(`timed out waiting for ${what}`);
+          await new Promise((resolve) => setTimeout(resolve, 50));
+        }
+      },
+      close: () => child.kill(),
+    };
+  } catch (error) {
+    child.kill();
+    throw error;
+  }
 }
 
-/** Execution options as the runtime sends them, pointed at the fake Devin. */
-export function executionOptions(
-  fixture: string,
-  extra: Record<string, unknown> = {},
-) {
+/** Execution options as the runtime sends them, with the server's launch spec. */
+export function executionOptions() {
   return {
     model: "swe-2-flash-medium",
     permissionMode: "accept-edits",
@@ -86,41 +115,48 @@ export function executionOptions(
     providerOptions: {
       acpLaunchSpec: {
         displayName: "Devin",
-        command: process.execPath,
-        args: [FAKE_DEVIN, fixture],
+        command: "devin",
+        args: ["acp"],
         env: {},
       },
       acpDialect: "devin",
-      ...extra,
     },
   };
 }
 
 /** Starts a thread and runs one turn of the fixture; resolves when it settles. */
-export async function replayTurn(fixture: string, cwd: string) {
-  const replay = await startReplay(cwd);
-  const threadId = "thr_replay";
-  const options = executionOptions(fixture);
-  const started = await replay.request("thread/start", {
-    threadId,
-    cwd,
-    options,
-    instructionMode: "append",
-  });
-  if (started.error) throw new Error(JSON.stringify(started.error));
-  const providerThreadId = started.result.providerThreadId;
-  const turn = await replay.request("turn/start", {
-    threadId,
-    providerThreadId,
-    clientRequestId: "creq_testturn23",
-    input: [{ type: "text", text: "replay" }],
-    options,
-  });
-  if (turn.error) throw new Error(JSON.stringify(turn.error));
-  const deadline = Date.now() + 20_000;
-  while (!replay.events.some((event) => event.type === "turn/completed")) {
-    if (Date.now() > deadline) throw new Error("turn did not complete");
-    await new Promise((resolve) => setTimeout(resolve, 50));
+export async function replayTurn(
+  fixture: string,
+  cwd: string,
+  env: Record<string, string> = {},
+) {
+  const replay = await startReplay(fixture, cwd, env);
+  try {
+    const threadId = "thr_replay";
+    const options = executionOptions();
+    const started = await replay.request("thread/start", {
+      threadId,
+      cwd,
+      options,
+      instructionMode: "append",
+    });
+    if (started.error) throw new Error(JSON.stringify(started.error));
+    const providerThreadId: string = started.result.providerThreadId;
+    const turn = await replay.request("turn/start", {
+      threadId,
+      providerThreadId,
+      clientRequestId: "creq_testturn23",
+      input: [{ type: "text", text: "replay" }],
+      options,
+    });
+    if (turn.error) throw new Error(JSON.stringify(turn.error));
+    await replay.waitFor(
+      (events) => events.some((event) => event.type === "turn/completed"),
+      "the turn to complete",
+    );
+    return { replay, providerThreadId, threadId };
+  } catch (error) {
+    replay.close();
+    throw error;
   }
-  return { replay, providerThreadId, threadId, options };
 }

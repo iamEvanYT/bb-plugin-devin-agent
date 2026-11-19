@@ -34,10 +34,12 @@ BB lists Devin in the provider picker on hosts where the CLI is found.
 | Permissions     | Devin's Session Mode (Code, Smart, Ask, Plan, Bypass) is the only control; what Devin asks about becomes a BB approval prompt.               |
 | Skills          | BB lists Devin's skill directories (`~/.config/devin/skills`, `.devin/skills`, and the `cognition` equivalents).                             |
 | Timeline rows   | Reads, searches (content and file name), commands with output and exit codes, edits, web fetches, and plans. Devin's own tools show by name. |
+| Rename          | Renaming a thread renames its Devin session (through the proxy described in [docs/architecture.md](docs/architecture.md)).                   |
+| `/compact`      | Runs Devin's own `/compact` and shows a compaction row.                                                                                      |
 | Subagents       | Devin's `run_subagent` is a delegation row with the subagent's summary, and the subagent's work is nested inside it.                         |
 
-Not supported yet: fork (Devin has no `session/fork`), rename, archive,
-manual compaction, native questions, BB's `auto` and `full` permission modes, plan mode,
+Not supported yet: fork (Devin has no `session/fork`), archive, native
+questions, BB's `auto` and `full` permission modes, plan mode,
 reasoning levels, and the usage dashboard.
 
 ## Development

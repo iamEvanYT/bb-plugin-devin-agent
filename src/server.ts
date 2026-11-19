@@ -49,9 +49,11 @@ export default async function plugin(bb: BbPluginApi) {
     capabilities: {
       supportsServiceTier: false,
       supportsNativeUserQuestion: false,
-      supportsManualCompaction: false,
+      // `/compact` is sent to Devin as its own slash command.
+      supportsManualCompaction: true,
       supportsThreadArchive: false,
-      supportsThreadRename: false,
+      // Through the proxy in host/acp-proxy.ts.
+      supportsThreadRename: true,
       // Devin advertises session/load but not session/fork.
       fork: "none",
       // Devin's Session Mode (Code, Smart, Ask, Plan, Bypass) decides what it

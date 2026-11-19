@@ -32,6 +32,7 @@ src/
   constants.ts              Ids, command name, and paths shared by both
   host/bridge.ts            The wrapped ACP bridge: inbound and outbound filters
   host/outbound.ts          Line filter over the bridge's stdout
+  host/acp-proxy.ts         The stdio proxy in front of Devin, and its control port
   host/account.ts           `devin auth status` parsing for health
   host/devin-dialect.ts     The `devin` ACP dialect and subagent nesting
   host/devin-executable.ts  CLI lookup and launch-spec rewrite
@@ -63,6 +64,29 @@ docs/                       Developer documentation
   then adds `parentRef` (the delegation's `childRef`) to those rows' delta
   keys, and drops the lifecycle updates Devin sends under the subagent id.
 
+- **Rename goes through a stdio proxy.** Devin only renames a session
+  (`_cognition.ai/session/rename`) on the connection that has it open, and
+  the SDK's ACP bridge keeps that connection private. So every request that
+  carries a launch spec, turns included, launches the built host entry in
+  proxy mode (`host/acp-proxy.ts`) in front of Devin. The ACP bridge restarts
+  the agent when a turn's spec differs from the session's, so the rewrite must
+  be identical every time. The proxy relays ACP lines unchanged, reports
+  session ids to the bridge over a loopback port guarded by a random token,
+  and on request writes the rename to Devin and keeps Devin's reply from the
+  SDK's bridge. Devin's `session_info_update` then becomes bb's title update
+  as usual. The control port, token, and an `ELECTRON_RUN_AS_NODE` added only
+  for the proxy are removed from Devin's environment. When no proxy has the
+  session (Devin exited), a one-off `devin acp` loads it and renames it.
+- **`initialize` advertises `threadRename`** once the control port listens;
+  runtime lines are held until then.
+- **`/compact` is Devin's own command.** The ACP bridge sends `/compact` as a
+  prompt and treats `end_turn` as completed; Devin runs it as its built-in
+  compaction.
+
 ## Known gaps
+
+- bb does not forward renames while a thread's runtime is stopped.
+- Devin sends no usage update after `/compact`, so the context meter is stale
+  until the next turn.
 
 - No settings page, model allowlist, or install action yet.

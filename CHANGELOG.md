@@ -14,5 +14,8 @@ All notable changes to this plugin are documented here. The format follows
 - Richer rows from Devin's own metadata: command exit codes, file-name
   searches, Devin's tool names, and subagents as delegation rows with their
   work nested inside.
+- Renaming a thread renames its Devin session, through a stdio proxy in front
+  of `devin acp`.
+- `/compact` runs Devin's own compaction.
 - Health reports a signed-out or expired Devin account instead of ready, and
   shows the account email and plan when signed in.

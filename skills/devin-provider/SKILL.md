@@ -36,8 +36,13 @@ the CLI path the plugin found; signed in it shows the account email and plan.
   subagent's summary; the subagent's own tool calls are nested inside.
 - Skills from `~/.config/devin/skills`, `~/.config/cognition/skills`,
   `.devin/skills`, and `.cognition/skills` appear in BB's `/` menu.
-- Not supported: fork, rename, archive, manual compaction, native questions,
-  plan mode, reasoning levels, and the usage dashboard.
+- Renaming a thread renames the Devin session (`_cognition.ai/session/rename`).
+  bb only sends renames while the thread's runtime is loaded; a stopped
+  thread's rename stays in bb.
+- `/compact` (or `bb thread compact`) runs Devin's own `/compact`. Devin sends
+  no usage update afterwards, so the context meter refreshes on the next turn.
+- Not supported: fork, archive, native questions, plan mode, reasoning levels,
+  and the usage dashboard.
 
 ## Troubleshooting
 

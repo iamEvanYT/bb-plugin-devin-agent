@@ -1,0 +1,70 @@
+// BB provider registration for Devin.
+//
+// Devin speaks the Agent Client Protocol through `devin acp`, so the host
+// entry runs the SDK's generic ACP bridge. This file only owns the provider
+// metadata and the launch spec.
+import { type BbPluginApi } from "@get-bb/plugin-sdk";
+import {
+  DEVIN_COMMAND,
+  DEVIN_EXECUTABLE_ENV,
+  DEVIN_LOGIN_COMMAND,
+  PROVIDER_ID,
+} from "./constants.ts";
+
+export default async function plugin(bb: BbPluginApi) {
+  bb.providers.register({
+    id: PROVIDER_ID,
+    displayName: "Devin",
+    icon: "./icons/devin.svg",
+    strings: {
+      signInHint: `Run \`${DEVIN_LOGIN_COMMAND}\` on this machine to sign in to Devin.`,
+      expiredHint: `Your Devin session expired. Run \`${DEVIN_LOGIN_COMMAND}\`, then reload.`,
+      installUrl: "https://devin.ai",
+      brandPrefix: "Devin ",
+      iconTint: { light: "#18181B", dark: "#FAFAFA" },
+    },
+    experimental_bridgeOptions: {
+      // The host replaces `command` with the CLI it finds: BB_DEVIN_EXECUTABLE,
+      // `devin` on PATH, or the copy bundled in Devin.app.
+      acpLaunchSpec: {
+        displayName: "Devin",
+        command: DEVIN_COMMAND,
+        args: ["acp"],
+        env: {},
+        // `--permission-mode` is a global flag, so it goes before `acp`.
+        permissionCli: {
+          workspaceWrite: ["--permission-mode", "accept-edits"],
+          full: ["--permission-mode", "dangerous"],
+          insertAfterArgs: 0,
+        },
+      },
+      acpDialect: "acp",
+    },
+    // Only list Devin on hosts where the CLI was found.
+    experimental_visibility: "installed",
+    maintenance: { health: true, usage: false, installation: false },
+    models: { scope: "workspace" },
+    env: { passthrough: [DEVIN_EXECUTABLE_ENV] },
+    // Devin's own skill directories (`devin skills paths`). BB already scans
+    // `.agents/skills`.
+    experimental_nativeSkillRoots: {
+      user: [".config/devin/skills", ".config/cognition/skills"],
+      project: [".devin/skills", ".cognition/skills"],
+    },
+    capabilities: {
+      supportsServiceTier: false,
+      supportsNativeUserQuestion: false,
+      supportsManualCompaction: false,
+      supportsThreadArchive: false,
+      supportsThreadRename: false,
+      // Devin advertises session/load but not session/fork.
+      fork: "none",
+      // The ACP bridge supports these two; `auto` is refused.
+      permissionModes: ["accept-edits", "full"],
+      reasoningLevels: ["medium"],
+    },
+    composerActions: [],
+  });
+
+  bb.log.info("registered Devin provider");
+}

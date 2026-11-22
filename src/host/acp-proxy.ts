@@ -8,7 +8,8 @@
 // pass through, and connects back to the bridge on a loopback port guarded by
 // a token. When the bridge asks, it writes its own request to Devin and keeps
 // Devin's reply from reaching the SDK's bridge.
-import { spawn, type ChildProcess } from "node:child_process";
+import type { ChildProcess } from "node:child_process";
+import { experimental_spawnHostProcess as spawn } from "@get-bb/plugin-sdk/process";
 import { randomBytes } from "node:crypto";
 import { createServer, connect, type Server, type Socket } from "node:net";
 import { createInterface } from "node:readline";

@@ -3,7 +3,7 @@
 // The SDK's generic ACP health only checks that the CLI runs, so a signed-out
 // Devin reported "ready" and its threads failed. `devin auth status` is local
 // and fast (about 0.3s), so health asks it directly.
-import { execFile } from "node:child_process";
+import { experimental_execHostFileCallback as execFile } from "@get-bb/plugin-sdk/process";
 import type { ProviderHealth } from "@get-bb/plugin-sdk/provider-bridge";
 
 export interface DevinAccount {
